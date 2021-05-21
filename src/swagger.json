@@ -1,0 +1,337 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Desafio 04 - Introdução ao SOLID",
+    "description": "this is an API to improve knowledge about SOLID and Swagger",
+    "version": "1.0.0",
+    "contact": {
+      "email": "lauro.nicolas.mazotti@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:{port}",
+      "description": "Development server",
+      "variables": {
+        "port": {
+          "enum": [
+            "3333"
+          ],
+          "default": "3333"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "description": "Cria um novo usuário",
+        "summary": "Criar usuário",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Lauro Nicolas Mazotti",
+                  "email": "lauro.nicolas.mazotti@gmail.com"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Dados do usuario cadastrado",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email already exists!"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "header",
+            "description": "ID do usuário que está requisitando",
+            "required": true,
+            "schema": {
+              "type": "string{$uuid}"
+            }
+          }
+        ],
+        "summary": "Lista dados",
+        "description": "Lista todos os usuários cadastrados, só podera ser acessado por um ADMIN",
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "admin": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    },
+                    "example": [
+                      {
+                        "id": "a870e426-43f3-44db-860c-106dfe1d2ff1",
+                        "admin": false,
+                        "name": "Lauro Nicolas Mazotti",
+                        "email": "lauro.nicolas.mazotti@gmail.com",
+                        "created_at": "2021-05-21T04:05:26.592Z",
+                        "updated_at": "2021-05-21T04:05:26.592Z"
+                      },
+                      {
+                        "id": "a22baf89-8639-4b6e-8332-b11ad1c87158",
+                        "admin": false,
+                        "name": "Niara Barbosa Krauss",
+                        "email": "niara.barbosa.krauss@gmail.com",
+                        "created_at": "2021-05-21T04:06:07.632Z",
+                        "updated_at": "2021-05-21T04:06:07.632Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Usuário sem permissão ou usuário nçao encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "Voce precisa ser um admin para listar todos os usuários"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Lista dados de um usuario",
+        "description": "Lista dados de um usuário especifico",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string{$uuid}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucessful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "a870e426-43f3-44db-860c-106dfe1d2ff1",
+                    "admin": false,
+                    "name": "Lauro Nicolas Mazotti",
+                    "email": "lauro.nicolas.mazotti@gmail.com",
+                    "created_at": "2021-05-21T04:05:26.592Z",
+                    "updated_at": "2021-05-21T04:05:26.592Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Usuário não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "Usuário não encontrado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Torna um usuário Admin",
+        "description": "Torna um usuário em Admin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string{$uuid}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucessful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "a870e426-43f3-44db-860c-106dfe1d2ff1",
+                    "admin": true,
+                    "name": "Lauro Nicolas Mazotti",
+                    "email": "lauro.nicolas.mazotti@gmail.com",
+                    "created_at": "2021-05-21T04:05:26.592Z",
+                    "updated_at": "2021-05-21T04:05:26.592Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Usuário não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "Usuário não encontrado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
